@@ -11,12 +11,26 @@ const request = new XMLHttpRequest();
 request.open('GET', '../themes.json', false);
 request.send(null);
 
-const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
-const styles = {
-    core: { css: '../dist/css/uikit-core.css' },
-    theme: { css: '../dist/css/uikit.css' },
-    ...themes,
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const request = new XMLHttpRequest();
+    request.open('GET', './path-to-theme-data.json', true); // Update with the actual path to theme JSON
+    request.onload = function () {
+        const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
+        const styles = {
+            core: { css: './dist/css/uikit-core.css' }, // Local version of core CSS
+            theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css' }, // Custom theme
+            ...themes,
+        };
+
+        // Dynamically apply the theme
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = styles.theme.css;
+        document.head.appendChild(link);
+    };
+    request.send();
+});
+
 const component = location.pathname
     .split('/')
     .pop()
