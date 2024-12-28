@@ -1,13 +1,14 @@
 {
   "default": {
-    "name": "APARIUM",
+    "name": "UiKit",
+        "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.css",
+    "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.js"
+
+  },
+  "aparium.theme": {
+    "name": "ApariumUiKit",
     "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.css",
     "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/js/uikit-icons.js"
-  },
-  "UiKit": {
-    "name": "UiKit",
-    "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.css",
-    "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.js"
   },
   "options": {
     "Custom Fonts": [

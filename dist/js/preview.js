@@ -501,7 +501,7 @@ let themes = {};
 // Wrap fetch call in an async IIFE (Immediately Invoked Function Expression)
 (async function loadThemes() {
   try {
-    const response = await fetch('./themes');
+    const response = await fetch('./themes.json');
     if (response.ok) {
       themes = await response.json();
     }
@@ -517,7 +517,7 @@ const styles = {
     css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.css'
   },
   theme: {
-    css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.css'
+    css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.css'
   },
   // Assuming `themes` is an object containing additional theme URLs
   ...themes,

@@ -26,7 +26,7 @@ const keyinverse = '_uikit_inverse';
   // Define styles
   const styles = {
     core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.min.css' },
-    theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css' },
+    theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.css' },
     // Assuming `themes` is an object containing additional theme URLs
     ...themes,
   };
