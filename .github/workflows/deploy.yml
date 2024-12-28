@@ -25,14 +25,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Steps represent a sequence of tasks that will be executed as part of the jobs steps:
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        - uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Code
+      - uses: actions/checkout@v4
 
       # Install Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      uses: actions/setup-node@v3
+      with:
+      node-version: '16'
 
       # Install dependencies
       - name: Install Dependencies
@@ -47,4 +48,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist # The folder containing your built files
+          publish_dir: ./dist # The folder containing your built file
