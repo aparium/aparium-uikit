@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     request.onload = function () {
         const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
         const styles = {
-            core: { css: './dist/css/uikit-core.css' }, // Local version of core CSS
+            core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.css' }, // Local version of core CSS
             theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css' }, // Custom theme
             ...themes,
         };
-
+        
         // Dynamically apply the theme
         const link = document.createElement('link');
         link.rel = 'stylesheet';

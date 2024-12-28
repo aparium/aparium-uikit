@@ -1,0 +1,50 @@
+{
+  "default": {
+    "name": "UiKit",
+    "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css",
+    "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/js/uikit-icons.min.js"
+  },
+  "aparium.theme": {
+    "name": "UiKit",
+    "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css",
+    "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/js/uikit-icons.min.js"
+  },
+  "options": {
+    "Custom Fonts": [
+      {
+        "name": "Freight Sans",
+        "value": "\"Freight Sans\",\"Poppins\", \"Open Sans\", Helvetica, Arial, sans-serif"
+      },
+      {
+        "name": "Freight Big",
+        "value": "\"Freight Big\", \"DM Serif Display\", \"Playfair Display\", Georgia, \"Times New Roman\",serif"
+      },
+      {
+        "name": "Playfair Display",
+        "value": "\"DM Serif Display\", serif"
+      },
+      {
+        "name": "Playfair Display",
+        "value": "\"Playfair Display\", serif"
+      },
+      {
+        "name": "Poppins",
+        "value": "\"Poppins\", sans-serif"
+      },
+      {
+        "name": "Open Sans",
+        "value": "\"Open Sans\", sans-serif"
+      }
+    ],
+    "System Fonts": [
+      {
+        "name": "Arial",
+        "value": "\"Helvetica Neue\", Helvetica, Arial, sans-serif"
+      },
+      {
+        "name": "Georgia",
+        "value": "Georgia, \"Times New Roman\", serif"
+      }
+    ]
+  }
+}

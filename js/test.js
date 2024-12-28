@@ -443,8 +443,8 @@
     request.send(null);
     const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
     const styles = {
-      core: { css: "../dist/css/uikit-core.css" },
-      theme: { css: "../dist/css/uikit.css" },
+      core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.css' }, 
+      theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css' },
       ...themes
     };
     const component = location.pathname.split("/").pop().replace(/.html$/, "");

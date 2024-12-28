@@ -9,13 +9,15 @@ const replace = require('gulp-replace');
 const paths = {
     js: './src/js/*.js',
     html: './src/*.html',
+    css: './src/css/*.less',
 };
 
-// Compile CSS and Minify
+// Compile LESS to CSS and Minify
 gulp.task('css', () => {
     return gulp
         .src(paths.css)
-        .pipe(cleanCSS())
+        .pipe(less()) // Compile LESS to CSS
+        .pipe(cleanCSS()) // Minify CSS
         .pipe(concat('uikit.aparium.theme.min.css'))
         .pipe(gulp.dest('./dist/css'));
 });
@@ -41,7 +43,11 @@ gulp.task('html', () => {
 gulp.task('watch', () => {
     gulp.watch(paths.js, gulp.series('js'));
     gulp.watch(paths.html, gulp.series('html'));
+    gulp.watch(paths.css, gulp.series('css'));
 });
 
+// Build Task
+gulp.task('build', gulp.series('css', 'js', 'html'));
+
 // Default Task
-gulp.task('default', gulp.series('js', 'html', 'watch'));
+gulp.task('default', gulp.series('build', 'watch'));
