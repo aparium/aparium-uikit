@@ -1,12 +1,11 @@
 /* global TESTS */
+import test from 'node:test';
 import{$$,addClass,css,on,prepend,removeClass,ucfirst} from './uikit-util';
 const tests = tests;
 const storage = window.sessionStorage;
 const key = '_uikit_style';
 const keyinverse = '_uikit_inverse';
 
-storage[key] = storage[key] || 'core';
-storage[keyinverse] = storage[keyinverse] || '';
 
   // Initialize themes
   let themes = {};
@@ -14,7 +13,7 @@ storage[keyinverse] = storage[keyinverse] || '';
   // Wrap fetch call in an async IIFE (Immediately Invoked Function Expression)
   (async function loadThemes() {
     try {
-      const response = await fetch('../themes.json');
+      const response = await fetch('./themes.json');
       if (response.ok) {
         themes = await response.json();
       }
@@ -26,12 +25,8 @@ storage[keyinverse] = storage[keyinverse] || '';
   
   // Define styles
   const styles = {
-    core: {
-      css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.min.css'
-    },
-    theme: {
-      css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css'
-    },
+    core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.min.css' },
+    theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css' },
     // Assuming `themes` is an object containing additional theme URLs
     ...themes,
   };
@@ -77,10 +72,14 @@ function initializeUIkit() {
 
 const component = location.pathname.split('/').pop().replace(/.html$/, '');
 const variations={"":"Default",light:"Dark",dark:"Light"};
+
 // Handle style parameters
 if (getParam('style') && getParam('style').match(/\.(json|css)$/)) {
   styles.custom = getParam('style');
 }
+
+storage[key] = storage[key] || "core";
+storage[keyinverse] = storage[keyinverse] || "";
 
 // Set document direction
 const dir = storage._uikit_dir || 'ltr';
@@ -108,12 +107,18 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(scriptIcons);
 });
 
-
+storage[key] = storage[key] || "core";
+storage[keyinverse] = storage[keyinverse] || "";
 // UI Initialization
 on(window, 'load', () => {
   setTimeout(() => {
     requestAnimationFrame(() => {
-      const $container = prepend(document.body, `\n  <div class="uk-container">\n<select class="uk-select uk-form-width-small" style="margin: 20px 20px 20px 0" aria-label="Component switcher">\n<option value="index.html">Overview</option>\n${tests.map((e => `<option value="${e}.html">${e.split("-").map(ucfirst).join(" ")}</option>`)).join("")}\n</select>\n<select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Theme switcher">\n${Object.keys(styles).map((e => `<option value="${e}">${ucfirst(e)}</option>`)).join("")}\n</select>\n<select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Inverse switcher">\n${Object.keys(variations).map((e => `<option value="${e}">${variations[e]}</option>`)).join("")}\n</select>\n<label style="margin: 20px">\n<input type="checkbox" class="uk-checkbox"/>\n<span style="margin: 5px">RTL</span>\n</label>\n</div>\n`);
+      const $container = prepend(
+        document.body,
+        ` <div class="uk-container"> <select class="uk-select uk-form-width-small" style="margin: 20px 20px 20px 0" aria-label="Component switcher"> <option value="index.html">Overview</option> ${tests.map(
+          (name) => `<option value="${name}.html">${name.split("-").map(ucfirst).join(" ")}</option>`
+        ).join("")} </select> <select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Theme switcher"> ${Object.keys(styles).map((style2) => `<option value="${style2}">${ucfirst(style2)}</option>`).join("")} </select> <select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Inverse switcher"> ${Object.keys(variations).map((name) => `<option value="${name}">${variations[name]}</option>`).join("")} </select> <label style="margin: 20px"> <input type="checkbox" class="uk-checkbox"/> <span style="margin: 5px">RTL</span> </label> </div> `
+          );
       const [$tests, $styles, $inverse, $rtl] = $container.children;
       // Handle component switching
       on($tests, 'change', () => {

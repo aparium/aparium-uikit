@@ -1,4 +1,4 @@
-import { each } from 'uikit-util';
+import { each } from './uikit-util';
 import * as components from './components/index';
 import UIkit from './uikit-core';
 
