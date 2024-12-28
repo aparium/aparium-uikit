@@ -4,8 +4,11 @@ const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const replace = require('gulp-replace');
-const del = require('del');
 const notify = require('gulp-notify');
+const rev = require('gulp-rev');
+
+// Dynamic Import for ESM Modules
+const loadDel = async () => (await import('del')).deleteSync;
 
 const outputDir = './dist';
 
@@ -16,7 +19,7 @@ const paths = {
     css: './src/css/*.less',
 };
 
-// Compile LESS to CSS and Minify
+// Error Handler
 const handleError = (error) => {
     console.error(error.toString());
     this.emit('end');
@@ -27,52 +30,40 @@ gulp.task('clean', () => {
     return del([outputDir]);
 });
 
-// Example in `css` task
+// Compile LESS to CSS and Minify
 gulp.task('css', () => {
     return gulp
-    .src(paths.css)
-    .pipe(less().on('error', handleError)) // Handle LESS compilation errors
-    .pipe(cleanCSS().on('error', handleError)) // Handle CSS minification errors
-    .pipe(concat('uikit.aparium.theme.min.css'))
-    .pipe(gulp.dest(`${outputDir}/css`))
-    .pipe(notify({ message: 'CSS task complete', onLast: true }))
-    .pipe(rev.manifest('rev-manifest.json', { merge: true }))
-    .pipe(gulp.dest(outputDir));
-});
-
-gulp.task('css', () => {
-    return gulp
-    .src(paths.css)
-    .pipe(less())
-    .pipe(cleanCSS())
-    .pipe(concat('uikit.aparium.theme.min.css'))
-    .pipe(rev()) // Add version hash
-    .pipe(gulp.dest(`${outputDir}/css`))
-    .pipe(rev.manifest('rev-manifest.json', { merge: true }))
-    .pipe(gulp.dest(outputDir));
+        .src(paths.css)
+        .pipe(less().on('error', handleError)) // Handle LESS compilation errors
+        .pipe(cleanCSS().on('error', handleError)) // Handle CSS minification errors
+        .pipe(concat('uikit.aparium.theme.min.css'))
+        .pipe(rev()) // Add version hash
+        .pipe(gulp.dest(`${outputDir}/css`))
+        .pipe(rev.manifest('rev-manifest.json', { merge: true }))
+        .pipe(gulp.dest(outputDir))
+        .pipe(notify({ message: 'CSS task complete', onLast: true }));
 });
 
 // Minify JS
 gulp.task('js', () => {
     return gulp
         .src(paths.js)
-        .pipe(uglify().on('error', handleError)) // Handle CSS minification errors
+        .pipe(uglify().on('error', handleError)) // Handle JS minification errors
         .pipe(concat('app.min.js'))
+        .pipe(rev()) // Add version hash
         .pipe(gulp.dest(`${outputDir}/js`))
-        .pipe(notify({ message: 'CSS task complete', onLast: true }))
         .pipe(rev.manifest('rev-manifest.json', { merge: true }))
-        .pipe(gulp.dest(outputDir));
+        .pipe(gulp.dest(outputDir))
+        .pipe(notify({ message: 'JS task complete', onLast: true }));
 });
 
 // Update Theme References in HTML
 gulp.task('html', () => {
     return gulp
         .src(paths.html)
-        .pipe(replace('../dist/css/uikit-core.css', 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css').on('error', handleError)) // Handle CSS minification errors
+        .pipe(replace('../dist/css/uikit-core.css', 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css').on('error', handleError)) // Handle HTML replace errors
         .pipe(gulp.dest(outputDir))
-        .pipe(notify({ message: 'CSS task complete', onLast: true }))
-        .pipe(rev.manifest('rev-manifest.json', { merge: true }))
-        .pipe(gulp.dest(outputDir));
+        .pipe(notify({ message: 'HTML task complete', onLast: true }));
 });
 
 // Watch for Changes
@@ -85,9 +76,8 @@ gulp.task('watch', () => {
 
 const isCI = process.env.CI === 'true'; // Check if running in CI/CD environment
 
-// Build task for CI/CD with cleaning
-gulp.task('build', gulp.series('clean', 'js', 'html'));
+// Build Task
+gulp.task('build', gulp.series('clean', 'css', 'js', 'html'));
 
-// Default task for local development (includes watch)
+// Default Task
 gulp.task('default', gulp.series('build', isCI ? () => {} : 'watch'));
-
