@@ -1,5 +1,5 @@
 /* global TESTS */
-import{$$,addClass,css,on,prepend,removeClass,ucfirst}from"uikit-util";
+import{$$,addClass,css,on,prepend,removeClass,ucfirst} from './uikit-util';
 const tests = tests;
 const storage = window.sessionStorage;
 const key = '_uikit_style';
@@ -60,7 +60,7 @@ loadCSS(styles.core.css, () => {
 // Function to initialize UIkit and other logic
 function initializeUIkit() {
   const scriptUIkit = document.createElement('script');
-  scriptUIkit.src = 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.min.js';
+  scriptUIkit.src = 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.js';
   scriptUIkit.onload = () => {
     console.log('UIkit script loaded.');
 
