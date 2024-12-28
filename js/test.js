@@ -467,9 +467,9 @@
     document.writeln(
       `<style>html:not(:has(body :first-child [aria-label="Component switcher"])) {padding-top: 80px}</style>`
     );
-    document.writeln('<script src="../dist/js/uikit.js"><\/script>');
+    document.writeln('<script src="https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.js"><\/script>');
     document.writeln(
-      `<script src="${style.icons ? style.icons : "../dist/js/uikit-icons.js"}"><\/script>`
+      `<script src="${style.icons ? style.icons : "https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.js"}"><\/script>`
     );
     on(
       window,
