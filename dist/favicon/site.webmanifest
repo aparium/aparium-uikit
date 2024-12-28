@@ -15,6 +15,6 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "https://cdn.jsdelivr.net/gh/aparium/uikit@develop/aparium-uikit/favicon",
+    "start_url": "https://cdn.jsdelivr.net/gh/aparium/aparium-uikit/dist/favicon/",
     "display": "standalone"
 }
