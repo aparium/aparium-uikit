@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass')(require('sass'));
+const less = require('gulp-less');
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
@@ -7,9 +7,8 @@ const replace = require('gulp-replace');
 
 // Paths
 const paths = {
-    css: './dist/css/*.css',
-    js: './Js/*.js',
-    html: './*.html',
+    js: './src/js/*.js',
+    html: './src/*.html',
 };
 
 // Compile CSS and Minify
@@ -40,10 +39,9 @@ gulp.task('html', () => {
 
 // Watch for Changes
 gulp.task('watch', () => {
-    gulp.watch(paths.css, gulp.series('css'));
     gulp.watch(paths.js, gulp.series('js'));
     gulp.watch(paths.html, gulp.series('html'));
 });
 
 // Default Task
-gulp.task('default', gulp.series('css', 'js', 'html', 'watch'));
+gulp.task('default', gulp.series('js', 'html', 'watch'));
