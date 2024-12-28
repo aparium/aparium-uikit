@@ -46,8 +46,10 @@ gulp.task('watch', () => {
     gulp.watch(paths.css, gulp.series('css'));
 });
 
-// Build Task
-gulp.task('build', gulp.series('css', 'js', 'html'));
+const isCI = process.env.CI === 'true'; // Check if running in CI/CD environment
 
-// Default Task
-gulp.task('default', gulp.series('build', 'watch'));
+// Default task for local development (includes watch)
+gulp.task('default', gulp.series('build', isCI ? () => {} : 'watch'));
+
+// Build task for CI/CD
+gulp.task('build', gulp.series('css', 'js', 'html'));
