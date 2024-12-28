@@ -1,11 +1,6 @@
 {
   "default": {
-    "name": "UiKit",
-    "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css",
-    "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/js/uikit-icons.min.js"
-  },
-  "aparium.theme": {
-    "name": "UiKit",
+    "name": "APARIUM",
     "css": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css",
     "icons": "https://cdn.jsdelivr.net/gh/aparium/css-style/css/js/uikit-icons.min.js"
   },
