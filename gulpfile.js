@@ -29,7 +29,9 @@ const handleError = (error) => {
 // Clean Task
 gulp.task('clean', async () => {
     const { deleteSync } = await import('del'); // Dynamically import del
-    deleteSync([outputDir]); // Use deleteSync to clean the directory
+    // deleteSync(`${outputDir}/css`); // Use deleteSync to clean the directory  
+    // deleteSync(`${outputDir}/js`); // Use deleteSync to clean the directory    
+    deleteSync(`${outputDir}/*`); // Deletes all files and subdirectories inside the directory
 });
 
 
@@ -80,8 +82,7 @@ gulp.task('watch', () => {
 });
 
 const isCI = process.env.CI === 'true'; // Check if running in CI/CD environment
-
 // Build Task    
-gulp.task('build', gulp.series('clean', 'css', 'js', 'html'));
+gulp.task('build', gulp.series('clean', 'js', 'html'));
 // Default Task
 gulp.task('default', gulp.series('build', isCI ? () => {} : 'watch'));

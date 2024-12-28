@@ -13,12 +13,12 @@ request.send(null);
 
 document.addEventListener('DOMContentLoaded', () => {
     const request = new XMLHttpRequest();
-    request.open('GET', './path-to-theme-data.json', true); // Update with the actual path to theme JSON
+    request.open('GET', '../themes.json', true); // Update with the actual path to theme JSON
     request.onload = function () {
         const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
         const styles = {
             core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.css' }, // Local version of core CSS
-            theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.aparium.theme.min.css' }, // Custom theme
+            theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.css' }, // Custom theme
             ...themes,
         };
         
@@ -68,9 +68,9 @@ document.writeln(
 );
 
 // add javascript
-document.writeln('<script src="../dist/js/uikit.js"></script>');
+document.writeln('<script src="https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.js"></script>');
 document.writeln(
-    `<script src="${style.icons ? style.icons : '../dist/js/uikit-icons.js'}"></script>`,
+    `<script src="${style.icons ? style.icons : 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.js'}"></script>`,
 );
 
 on(window, 'load', () =>
