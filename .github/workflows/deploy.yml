@@ -14,13 +14,12 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
 name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main 
-
+      - main
+      
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
