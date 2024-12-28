@@ -23,7 +23,7 @@ jobs:
       # Steps represent a sequence of tasks that will be executed as part of the jobs steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Code
-      - uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
       # Install Node.js
       - name: Setup Node.js
