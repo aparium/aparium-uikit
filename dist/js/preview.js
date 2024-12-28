@@ -9,56 +9,75 @@
   const hyphenateRe = /\B([A-Z])/g;
   const hyphenate = memoize((str) => str.replace(hyphenateRe, "-$1").toLowerCase());
   const ucfirst = memoize((str) => str.charAt(0).toUpperCase() + str.slice(1));
+
   function startsWith(str, search) {
     var _a;
     return (_a = str == null ? void 0 : str.startsWith) == null ? void 0 : _a.call(str, search);
   }
-  const { isArray, from: toArray } = Array;
+  const {
+    isArray,
+    from: toArray
+  } = Array;
+
   function isFunction(obj) {
     return typeof obj === "function";
   }
+
   function isObject(obj) {
     return obj !== null && typeof obj === "object";
   }
+
   function isWindow(obj) {
     return isObject(obj) && obj === obj.window;
   }
+
   function isDocument(obj) {
     return nodeType(obj) === 9;
   }
+
   function isNode(obj) {
     return nodeType(obj) >= 1;
   }
+
   function nodeType(obj) {
     return !isWindow(obj) && isObject(obj) && obj.nodeType;
   }
+
   function isString(value) {
     return typeof value === "string";
   }
+
   function isNumber(value) {
     return typeof value === "number";
   }
+
   function isNumeric(value) {
     return isNumber(value) || isString(value) && !isNaN(value - parseFloat(value));
   }
+
   function isUndefined(value) {
     return value === void 0;
   }
+
   function toFloat(value) {
     return parseFloat(value) || 0;
   }
+
   function toNode(element) {
     return element && toNodes(element)[0];
   }
+
   function toNodes(element) {
     return isNode(element) ? [element] : Array.from(element || []).filter(isNode);
   }
+
   function sumBy(array, iteratee) {
     return array.reduce(
       (sum, item) => sum + toFloat(isFunction(iteratee) ? iteratee(item) : item[iteratee]),
       0
     );
   }
+
   function memoize(fn) {
     const cache = /* @__PURE__ */ Object.create(null);
     return (key, ...args) => cache[key] || (cache[key] = fn(key, ...args));
@@ -72,6 +91,7 @@
       }
     }
   }
+
   function removeClass(element, ...classes) {
     for (const node of toNodes(element)) {
       const remove = toClasses(classes).filter((cls) => hasClass(node, cls));
@@ -80,10 +100,12 @@
       }
     }
   }
+
   function hasClass(element, cls) {
     [cls] = toClasses(cls);
     return toNodes(element).some((node) => node.classList.contains(cls));
   }
+
   function toClasses(str) {
     return str ? isArray(str) ? str.map(toClasses).flat() : String(str).split(" ").filter(Boolean) : [];
   }
@@ -111,6 +133,7 @@
       }
     }
   }
+
   function removeAttr(element, name) {
     toNodes(element).forEach((element2) => element2.removeAttribute(name));
   }
@@ -119,17 +142,21 @@
     var _a;
     return (_a = toNode(element)) == null ? void 0 : _a.parentElement;
   }
+
   function filter(element, selector) {
     return toNodes(element).filter((element2) => matches(element2, selector));
   }
+
   function matches(element, selector) {
     return toNodes(element).some((element2) => element2.matches(selector));
   }
+
   function children(element, selector) {
     element = toNode(element);
     const children2 = element ? toArray(element.children) : [];
     return selector ? filter(children2, selector) : children2;
   }
+
   function index(element, ref) {
     return ref ? toNodes(element).indexOf(toNode(ref)) : children(parent(element)).indexOf(element);
   }
@@ -137,6 +164,7 @@
   function find(selector, context) {
     return toNode(_query(selector, toNode(context), "querySelector"));
   }
+
   function findAll(selector, context) {
     return toNodes(_query(selector, toNode(context), "querySelectorAll"));
   }
@@ -165,6 +193,7 @@
     const [position] = selector.match(positionRe);
     return [position, selector.slice(position.length + 1)];
   });
+
   function _query(selector, context = document, queryFn) {
     const parsed = parseSelector(selector);
     if (!parsed.isContextSelector) {
@@ -209,6 +238,7 @@
     }
     return _doQuery(context, queryFn, selector);
   }
+
   function _doQuery(context, queryFn, selector) {
     try {
       return context[queryFn](selector);
@@ -216,6 +246,7 @@
       return null;
     }
   }
+
   function domPath(element) {
     const names = [];
     while (element.parentNode) {
@@ -224,7 +255,9 @@
         names.unshift(`#${escape(id)}`);
         break;
       } else {
-        let { tagName } = element;
+        let {
+          tagName
+        } = element;
         if (tagName !== "HTML") {
           tagName += `:nth-child(${index(element) + 1})`;
         }
@@ -234,6 +267,7 @@
     }
     return names.join(" > ");
   }
+
   function escape(css) {
     return isString(css) ? CSS.escape(css) : "";
   }
@@ -256,6 +290,7 @@
     }
     return () => off(targets, types, listener, useCapture);
   }
+
   function off(...args) {
     let [targets, types, , listener, useCapture = false] = getArgs(args);
     for (const type of types) {
@@ -264,6 +299,7 @@
       }
     }
   }
+
   function getArgs(args) {
     args[0] = toEventTargets(args[0]);
     if (isString(args[1])) {
@@ -274,6 +310,7 @@
     }
     return args;
   }
+
   function delegate(selector, listener) {
     return (e) => {
       const current = selector[0] === ">" ? findAll(selector, e.currentTarget).reverse().find((element) => element.contains(e.target)) : e.target.closest(selector);
@@ -284,9 +321,11 @@
       }
     };
   }
+
   function detail(listener) {
     return (e) => isArray(e.detail) ? listener(e, ...e.detail) : listener(e);
   }
+
   function selfFilter(listener) {
     return function (e) {
       if (e.target === e.currentTarget || e.target === e.current) {
@@ -294,12 +333,15 @@
       }
     };
   }
+
   function isEventTarget(target) {
     return target && "addEventListener" in target;
   }
+
   function toEventTarget(target) {
     return isEventTarget(target) ? target : toNode(target);
   }
+
   function toEventTargets(target) {
     return isArray(target) ? target.map(toEventTarget).filter(Boolean) : isString(target) ? findAll(target) : isEventTarget(target) ? [target] : toNodes(target);
   }
@@ -321,6 +363,7 @@
     "z-index": true,
     zoom: true
   };
+
   function css(element, property, value, priority) {
     const elements = toNodes(element);
     for (const element2 of elements) {
@@ -354,7 +397,9 @@
       return name;
     }
     name = hyphenate(name);
-    const { style } = document.documentElement;
+    const {
+      style
+    } = document.documentElement;
     if (name in style) {
       return name;
     }
@@ -367,6 +412,7 @@
   });
 
   const prepend = applyFn("prepend");
+
   function applyFn(fn) {
     return function (ref, element) {
       var _a;
@@ -376,6 +422,7 @@
     };
   }
   const singleTagRe = /^<(\w+)\s*\/?>(?:<\/\1>)?$/;
+
   function fragment(html2) {
     const matches = singleTagRe.exec(html2);
     if (matches) {
@@ -385,15 +432,19 @@
     container.innerHTML = html2.trim();
     return unwrapSingle(container.content.childNodes);
   }
+
   function unwrapSingle(nodes) {
     return nodes.length > 1 ? nodes : nodes[0];
   }
+
   function $(selector, context) {
     return isHtml(selector) ? toNode(fragment(selector)) : find(selector, context);
   }
+
   function $$(selector, context) {
     return isHtml(selector) ? toNodes(fragment(selector)) : findAll(selector, context);
   }
+
   function isHtml(str) {
     return isString(str) && startsWith(str.trim(), "<");
   }
@@ -402,8 +453,10 @@
     width: ["left", "right"],
     height: ["top", "bottom"]
   };
+
   dimension("height");
   dimension("width");
+
   function dimension(prop) {
     const propName = ucfirst(prop);
     return (element, value) => {
@@ -428,129 +481,165 @@
       }
     };
   }
+
   function boxModelAdjust(element, prop, sizing = "border-box") {
     return css(element, "boxSizing") === sizing ? sumBy(
       dirs[prop],
       (prop2) => toFloat(css(element, `padding-${prop2}`)) + toFloat(css(element, `border-${prop2}-width`))
     ) : 0;
   }
+
   const tests = ["accordion", "alert", "align", "animation", "aparium-test", "article", "background", "badge", "base", "breadcrumb", "button", "card", "close", "column", "comment", "container", "countdown", "cover", "customizer", "description-list", "divider", "dotnav", "drop", "dropbar", "dropdown", "dropnav", "filter", "flex", "form", "grid-masonry", "grid-parallax", "grid", "heading", "height-expand", "height-viewport", "height", "icon", "iconnav", "image", "label", "leader", "lightbox", "link", "list", "margin", "marker", "modal", "nav", "navbar", "notification", "offcanvas", "overlay", "padding", "pagination", "parallax", "placeholder", "position", "progress", "scroll", "scrollspy", "search", "section", "slidenav", "slider", "slideshow", "sortable", "spinner", "sticky-navbar", "sticky-parallax", "sticky", "subnav", "svg", "switcher", "tab", "table", "test_2", "text", "thumbnav", "tile", "toggle", "tooltip", "totop", "transition", "upload", "utility", "video", "visibility", "width"];
+
   const storage = window.sessionStorage;
   const key = "_uikit_style";
   const keyinverse = "_uikit_inverse";
-  const request = new XMLHttpRequest();
-  request.open("GET", "./themes.json", false);
-  request.send(null);
-  document.addEventListener('DOMContentLoaded', () => {
-    const request = new XMLHttpRequest();
-    request.open('GET', './themes.json', true);
-    request.onload = function () {
-      const themes = request.status === 200 ? JSON.parse(request.responseText) : {};
-      const styles = {
-        core: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.min.css' },
-        theme: { css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css' },
-        ...themes,
-      };
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = styles.theme.css;
-      document.head.appendChild(link);
-    };
-    request.send();
-  });
-  const component = location.pathname
-    .split('/')
-    .pop()
-    .replace(/.html$/, '');
-  const variations = {
-    "": "Default",
-    light: "Dark",
-    dark: "Light"
-  };
-  if (getParam("style") && getParam("style").match(/\.(json|css)$/)) {
-    styles.custom = getParam("style");
+
+  // Initialize themes
+let themes = {};
+
+// Wrap fetch call in an async IIFE (Immediately Invoked Function Expression)
+(async function loadThemes() {
+  try {
+    const response = await fetch('../themes.json');
+    if (response.ok) {
+      themes = await response.json();
+    }
+  } catch (error) {
+    console.error('Failed to load themes.json:', error);
   }
-  storage[key] = storage[key] || "core";
-  storage[keyinverse] = storage[keyinverse] || "";
-  const dir = storage._uikit_dir || "ltr";
-  document.dir = dir;
-  const style = styles[storage[key]] || styles.theme;
-  document.writeln(
-    `<link rel="stylesheet" href="${dir !== "rtl" ? style.css : style.css.replace(".css", "-rtl.css")}">`
-  );
-  document.writeln(
-    `<style>html:not(:has(body :first-child [aria-label="Component switcher"])) {padding-top: 80px}</style>`
-  );
-  document.writeln('<script src="https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.js"><\/script>');
-  document.writeln(
-    `<script src="${style.icons ? style.icons : "https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.js"}"><\/script>`
-  );
-  on(
-    window,
-    "load",
-    () => setTimeout(
-      () => requestAnimationFrame(() => {
-        const $container = prepend(
-          document.body,
-          ` <div class="uk-container"> <select class="uk-select uk-form-width-small" style="margin: 20px 20px 20px 0" aria-label="Component switcher"> <option value="index.html">Overview</option> ${tests.map(
-            (name) => `<option value="${name}.html">${name.split("-").map(ucfirst).join(" ")}</option>`
-          ).join("")} </select> <select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Theme switcher"> ${Object.keys(styles).map((style2) => `<option value="${style2}">${ucfirst(style2)}</option>`).join("")} </select> <select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Inverse switcher"> ${Object.keys(variations).map((name) => `<option value="${name}">${variations[name]}</option>`).join("")} </select> <label style="margin: 20px"> <input type="checkbox" class="uk-checkbox"/> <span style="margin: 5px">RTL</span> </label> </div> `
-        );
+})();
+
+
+// Define styles
+const styles = {
+  core: {
+    css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit-core.min.css'
+  },
+  theme: {
+    css: 'https://cdn.jsdelivr.net/gh/aparium/css-style/css/uikit.min.css'
+  },
+  // Assuming `themes` is an object containing additional theme URLs
+  ...themes,
+};
+
+// Function to load CSS dynamically
+function loadCSS(href, callback) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  link.onload = callback;
+  link.onerror = () => console.error(`Failed to load CSS: ${href}`);
+  document.head.appendChild(link);
+}
+
+// Load the core and theme styles sequentially
+loadCSS(styles.core.css, () => {
+  console.log('Core CSS loaded.');
+  loadCSS(styles.theme.css, () => {
+    console.log('Theme CSS loaded.');
+
+    // Now proceed with the rest of your script
+    initializeUIkit();
+  });
+});
+
+// Function to initialize UIkit and other logic
+function initializeUIkit() {
+  const scriptUIkit = document.createElement('script');
+  scriptUIkit.src = 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.min.js';
+  scriptUIkit.onload = () => {
+    console.log('UIkit script loaded.');
+
+    const scriptIcons = document.createElement('script');
+    scriptIcons.src = 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.min.js';
+    scriptIcons.onload = () => {
+      console.log('UIkit Icons script loaded.');
+    };
+    document.body.appendChild(scriptIcons);
+  };
+  document.body.appendChild(scriptUIkit);
+}
+
+// Set document direction
+const dir = storage._uikit_dir || 'ltr';
+document.dir = dir;
+
+// Load selected stylesheet
+const style = styles[storage[key]] || styles.theme;
+document.addEventListener('DOMContentLoaded', () => {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = dir !== 'rtl' ? style.css : style.css.replace('.css', '-rtl.css');
+  document.head.appendChild(link);
+// Add inline style for component switcher
+const styleElement = document.createElement('style');
+styleElement.textContent = `html:not(:has(body :first-child [aria-label="Component switcher"])) { padding-top: 80px; }`;
+document.head.appendChild(styleElement);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const scriptUIkit = document.createElement('script');
+  scriptUIkit.src = 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit.min.js';
+  document.body.appendChild(scriptUIkit);
+
+  const scriptIcons = document.createElement('script');
+  scriptIcons.src = style.icons || 'https://cdn.jsdelivr.net/gh/aparium/css-style/js/uikit-icons.min.js';
+  document.body.appendChild(scriptIcons);
+});
+
+
+  // UI Initialization
+  on(window, 'load', () => {
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        const $container = prepend(document.body, `\n  <div class="uk-container">\n<select class="uk-select uk-form-width-small" style="margin: 20px 20px 20px 0" aria-label="Component switcher">\n<option value="index.html">Overview</option>\n${tests.map((e => `<option value="${e}.html">${e.split("-").map(ucfirst).join(" ")}</option>`)).join("")}\n</select>\n<select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Theme switcher">\n${Object.keys(styles).map((e => `<option value="${e}">${ucfirst(e)}</option>`)).join("")}\n</select>\n<select class="uk-select uk-form-width-small" style="margin: 20px" aria-label="Inverse switcher">\n${Object.keys(variations).map((e => `<option value="${e}">${variations[e]}</option>`)).join("")}\n</select>\n<label style="margin: 20px">\n<input type="checkbox" class="uk-checkbox"/>\n<span style="margin: 5px">RTL</span>\n</label>\n</div>\n`);
         const [$tests, $styles, $inverse, $rtl] = $container.children;
-        on($tests, "change", () => {
+        // Handle component switching
+        on($tests, 'change', () => {
           if ($tests.value) {
-            location.href = `${$tests.value}${styles.custom ? `?style=${getParam("style")}` : ""}`;
+            location.href = `${$tests.value}${styles.custom ? `?style=${getParam('style')}` : ''}`;
           }
         });
-        $tests.value = `${component || "index"}.html`;
-        on($styles, "change", () => {
+        $tests.value = `${component || 'index'}.html`;
+        // Handle style switching
+        on($styles, 'change', () => {
           storage[key] = $styles.value;
           location.reload();
         });
         $styles.value = storage[key];
+        // Handle variations
         $inverse.value = storage[keyinverse];
         if ($inverse.value) {
           removeClass(
-            $$("*"),
-            "uk-card-default",
-            "uk-card-muted",
-            "uk-card-primary",
-            "uk-card-secondary",
-            "uk-tile-default",
-            "uk-tile-muted",
-            "uk-tile-primary",
-            "uk-tile-secondary",
-            "uk-section-default",
-            "uk-section-muted",
-            "uk-section-primary",
-            "uk-section-secondary",
-            "uk-overlay-default",
-            "uk-overlay-primary"
+            $$('*'),
+            'uk-card-default', 'uk-card-muted', 'uk-card-primary', 'uk-card-secondary',
+            'uk-tile-default', 'uk-tile-muted', 'uk-tile-primary', 'uk-tile-secondary',
+            'uk-section-default', 'uk-section-muted', 'uk-section-primary', 'uk-section-secondary',
+            'uk-overlay-default', 'uk-overlay-primary',
           );
-          addClass($$(".uk-navbar-container"), "uk-navbar-transparent");
-          css(
-            document.documentElement,
-            "background",
-            $inverse.value === "dark" ? "#fff" : "#222"
-          );
+          addClass($$('.uk-navbar-container'), 'uk-navbar-transparent');
+          css(document.documentElement, 'background', $inverse.value === 'dark' ? '#fff' : '#222');
           addClass(document.body, `uk-${$inverse.value}`);
         }
-        on($inverse, "change", () => {
+        on($inverse, 'change', () => {
           storage[keyinverse] = $inverse.value;
           location.reload();
         });
-        on($rtl, "change", ({ target }) => {
-          storage._uikit_dir = target.checked ? "rtl" : "ltr";
+        // Handle RTL
+        on($rtl, 'change', ({
+          target
+        }) => {
+          storage._uikit_dir = target.checked ? 'rtl' : 'ltr';
           location.reload();
         });
-        $rtl.firstElementChild.checked = dir === "rtl";
-      }),
-      100
-    )
-  );
+        $rtl.firstElementChild.checked = dir === 'rtl';
+      });
+    }, 100);
+  });
+
   function getParam(name) {
     const match = new RegExp(`[?&]${name}=([^&]*)`).exec(window.location.search);
-    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
   }
-
 }));
